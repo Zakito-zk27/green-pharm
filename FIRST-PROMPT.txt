@@ -1,0 +1,12 @@
+Read CLAUDE.md, then docs/PROGRESS.md, then only the current phase in docs/PHASES.md. Also look at the reference folder (the approved prototypes).
+
+Your job is to build the whole Green Pharm store, phase by phase, following docs/PHASES.md.
+
+Rules:
+1. Before starting a phase, show me a short plan and wait for my OK.
+2. Inside a phase, do one step at a time. After each step: say what changed, how I can test it, update docs/PROGRESS.md, commit, and stop until I say "continue".
+3. Anything marked [OWNER] needs me (accounts, keys, decisions). Explain it in simple Arabic, one thing at a time, and never guess a value.
+4. Do not change the approved design and do not build extras I did not ask for.
+5. If this is a new chat, resume from docs/PROGRESS.md instead of starting over.
+
+Start with the current position in docs/PROGRESS.md.
