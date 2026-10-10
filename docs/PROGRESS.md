@@ -6,7 +6,7 @@ Claude Code: read this file first in every new chat, then read only the current 
 
 - Phase: 0 (Foundations)
 - Step: 6 done (.env.example, README, DECISIONS). Next: step 7 [OWNER] Supabase + Vercel accounts
-- Waiting on owner: nothing yet
+- Waiting on owner: step 7 (create Supabase project, then Vercel project, in the client name); confirm the dark-mode fix
 
 ## Phases
 
@@ -37,6 +37,11 @@ Claude Code: read this file first in every new chat, then read only the current 
 ## Owner actions pending
 
 (accounts, keys, content the owner still has to provide)
+
+- [ ] Phase 0 step 7a: create the Supabase project (client name), send Project URL + anon/publishable key in chat. Service-role key only into `.env.local` by the owner.
+- [ ] Phase 0 step 7b: create the Vercel project (client name).
+- [ ] Confirm the dark-mode fix (docs/DECISIONS.md, "Theme tokens").
+- [ ] Before phase 1 checkout: real delivery prices per wilaya (home + desk) and the free-shipping threshold. Prototype values are test values.
 
 ## Known issues
 
