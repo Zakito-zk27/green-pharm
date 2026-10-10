@@ -5,7 +5,7 @@ Claude Code: read this file first in every new chat, then read only the current 
 ## Current position
 
 - Phase: 0 (Foundations)
-- Step: 4 done (helpers fixNums/formatDA/phone, tested). Next: step 5 (58 wilayas)
+- Step: 5 done (58 wilayas, tested). Next: step 6 (.env.example, README, DECISIONS)
 - Waiting on owner: nothing yet
 
 ## Phases
@@ -32,6 +32,7 @@ Claude Code: read this file first in every new chat, then read only the current 
 - 2026-10-10: i18n via next-intl, URLs /ar and /fr, cookie NEXT_LOCALE remembers choice 1 year; texts copied verbatim from prototype TX. Details in docs/DECISIONS.md.
 - 2026-10-10: next-intl plugin replaced by a direct Turbopack alias (plugin pulls @swc/core whose binary fails on Windows).
 - 2026-10-10: Theme tokens from prototype DEFAULT, validated in src/lib/theme.ts; dark-mode readability fix (see DECISIONS.md, owner to confirm).
+- 2026-10-10: Only wilaya names ported; prototype delivery prices are test values (rate() in store.html) and must come from the owner.
 
 ## Owner actions pending
 
