@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Green Pharm store
 
-## Getting Started
+Online store for Green Pharm (dermo-cosmetics, Algeria): bilingual storefront (Arabic RTL / French),
+cash-on-delivery checkout, and an admin dashboard. Built with Next.js, Supabase and Tailwind.
 
-First, run the development server:
+- Roadmap: [docs/PHASES.md](docs/PHASES.md) · Live status: [docs/PROGRESS.md](docs/PROGRESS.md) ·
+  Decisions: [docs/DECISIONS.md](docs/DECISIONS.md)
+- Approved design (source of truth): [reference/](reference/)
+
+## Run it on your computer
+
+You need Node.js 24 (or newer) and npm.
 
 ```bash
+npm install
+cp .env.example .env.local   # then fill in the values (not needed yet in phase 0)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. You are sent to `/ar` (Arabic) or `/fr` (French).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command             | What it does                                         |
+| ------------------- | ---------------------------------------------------- |
+| `npm run dev`       | Start the site locally, reloads on every change      |
+| `npm test`          | Run the unit tests (prices, phone, numbers, wilayas) |
+| `npm run typecheck` | Check TypeScript types                               |
+| `npm run lint`      | Check code quality                                   |
+| `npm run build`     | Build for production (what Vercel runs)              |
+| `npm run check`     | All of the above, in order. Run before every commit  |
+| `npm run format`    | Format all files with Prettier                       |
 
-## Learn More
+## Folders
 
-To learn more about Next.js, take a look at the following resources:
+```
+messages/        Storefront texts, ar.json and fr.json (copied from the prototype)
+src/app/         Pages. Everything visible lives under src/app/[locale]/
+src/components/  Shared UI pieces
+src/data/        Static data (the 58 wilayas)
+src/i18n/        Language setup (next-intl)
+src/lib/         Helpers: theme, price/number formatting, phone validation
+src/proxy.ts     Sends visitors to /ar or /fr
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Secrets
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Never commit `.env.local` or put keys in code. The Supabase service-role key is used only on the
+server. See `.env.example`.

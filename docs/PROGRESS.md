@@ -5,7 +5,7 @@ Claude Code: read this file first in every new chat, then read only the current 
 ## Current position
 
 - Phase: 0 (Foundations)
-- Step: 5 done (58 wilayas, tested). Next: step 6 (.env.example, README, DECISIONS)
+- Step: 6 done (.env.example, README, DECISIONS). Next: step 7 [OWNER] Supabase + Vercel accounts
 - Waiting on owner: nothing yet
 
 ## Phases
