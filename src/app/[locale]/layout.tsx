@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
+import type { CSSProperties } from "react";
 import { locale as rootLocale } from "next/root-params";
 import { dirOf, routing } from "@/i18n/routing";
+import { themeAttrs, themeVars } from "@/lib/theme";
 import { cairo, plexArabic, tajawal } from "../fonts";
 import "../globals.css";
 
@@ -24,6 +26,9 @@ export default async function LocaleLayout({ children }: LayoutProps<"/[locale]"
     <html
       lang={locale}
       dir={dirOf(locale)}
+      // Store Designer config comes from the database in phase 4; prototype defaults until then.
+      {...themeAttrs()}
+      style={themeVars() as CSSProperties}
       className={`${plexArabic.variable} ${cairo.variable} ${tajawal.variable}`}
     >
       <body>

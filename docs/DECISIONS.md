@@ -30,3 +30,14 @@ directly. If we ever need the extractor, revisit this.
 IBM Plex Sans Arabic (default), Cairo and Tajawal through `next/font/google`. Next downloads them at build
 time and serves them from our own domain, so visitors never call Google. Only IBM Plex is preloaded; the
 other two are for the Store Designer.
+
+## 2026-10-10 — Theme tokens
+
+- `src/lib/theme.ts` turns the Store Designer config (same fields as `DEFAULT` in the prototype) into CSS
+  variables on `<html>`. Values are validated first (hex colors only, radius 0–32, 2–4 columns, ratio
+  1/1 or 4/5, known fonts and backgrounds), so admin input can't inject CSS.
+- `src/app/globals.css` holds the prototype's `:root` tokens; Tailwind can use them (`bg-brand`,
+  `text-ink`, `border-line`, `rounded-theme`…).
+- **Dark-mode fix (to confirm with owner):** in the prototype, a phone in dark mode with the cream
+  background got light text on cream (unreadable). The dark rules now come after the background rules,
+  so dark mode shows the full dark palette. Light mode looks exactly like the prototype.

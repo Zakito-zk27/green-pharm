@@ -12,7 +12,11 @@ export function LanguageSwitch() {
   const next: Locale = locale === "ar" ? "fr" : "ar";
 
   return (
-    <button type="button" onClick={() => router.replace(pathname, { locale: next })}>
+    <button
+      type="button"
+      className="rounded-theme border border-line bg-card px-5 py-3"
+      onClick={() => router.replace(pathname, { locale: next })}
+    >
       {t("langBtn")}
     </button>
   );

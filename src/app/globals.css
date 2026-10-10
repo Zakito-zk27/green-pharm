@@ -1,1 +1,97 @@
 @import "tailwindcss";
+
+/* Theme tokens, ported from reference/store.html.
+   Brand-driven values (--brand, --brand-ink, --brand-soft, --radius, --cols, --ratio, --side,
+   --font-body) are also set inline on <html> from the Store Designer config (src/lib/theme.ts).
+   The values here are the fallbacks. */
+:root {
+  --brand: #2f5d46;
+  --brand-ink: #fff;
+  --brand-soft: #e8efe9;
+  --accent: #4f9c88;
+  --side: #1d2b24;
+  --bg: #fcf8f9;
+  --card: #ffffff;
+  --ink: #2a1f2d;
+  --muted: #7d7080;
+  --line: #eddfe3;
+  --radius: 16px;
+  --cols: 4;
+  --ratio: 1/1;
+  --font-body: var(--font-plex), "Segoe UI", Tahoma, Arial, sans-serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+:root[data-bg="cream"] {
+  --bg: #fbf8f0;
+  --line: #e6e0cf;
+}
+:root[data-bg="white"] {
+  --bg: #ffffff;
+}
+/* Dark mode comes after the data-bg rules on purpose: same specificity, so it wins.
+   In the prototype the order was reversed and a phone in dark mode got light text on the
+   cream background (unreadable). See docs/DECISIONS.md. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17111a;
+    --card: #221a26;
+    --ink: #f3ecf4;
+    --muted: #a99cad;
+    --line: #352a3b;
+    --brand-soft: #3a2230;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17111a;
+  --card: #221a26;
+  --ink: #f3ecf4;
+  --muted: #a99cad;
+  --line: #352a3b;
+  --brand-soft: #3a2230;
+}
+
+/* Let Tailwind utilities use the tokens: bg-brand, text-ink, border-line, rounded-theme, font-body… */
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent: var(--accent);
+  --color-side: var(--side);
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --radius-theme: var(--radius);
+  --font-body: var(--font-body);
+}
+
+html {
+  scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 70px);
+  scroll-behavior: smooth;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+}
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+a {
+  color: inherit;
+}
