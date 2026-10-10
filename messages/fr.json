@@ -101,6 +101,21 @@
     "cur": "DA",
     "langBtn": "العربية",
     "waT": "Écrivez-nous sur WhatsApp",
-    "title": "Green Pharm | Dermo-cosmétique"
+    "title": "Green Pharm | Dermo-cosmétique",
+    "couponL": "Code promo",
+    "couponApply": "Appliquer",
+    "couponOk": "Code appliqué.",
+    "couponBad": "Ce code est invalide ou expiré.",
+    "sDisc": "Remise",
+    "errStock": "Le stock d’un produit a changé. Vérifiez le panier puis confirmez à nouveau.",
+    "errBlocked": "Impossible de valider une commande avec ce numéro. Contactez le service client.",
+    "errRate": "Trop de commandes avec ce numéro. Patientez un peu puis réessayez.",
+    "errNet": "La commande n’a pas pu être envoyée. Vérifiez la connexion et réessayez.",
+    "sending": "Envoi…",
+    "lpOrder": "Commandez maintenant · paiement à la livraison",
+    "lpEnds": "L’offre se termine dans",
+    "hrs": "heures",
+    "mins": "minutes",
+    "secs": "secondes"
   }
 }

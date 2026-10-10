@@ -19,6 +19,13 @@ npm run dev
 
 Open http://localhost:3000. You are sent to `/ar` (Arabic) or `/fr` (French).
 
+- Admin dashboard: http://localhost:3000/admin (password: `ADMIN_PASSWORD` in `.env.local`)
+- Landing pages: `/ar/p/<slug>` and `/fr/p/<slug>`, created in the admin
+- Data lives in `.data/` (orders, products, settings in `db.json`; uploaded images in `uploads/`).
+  Delete `.data/db.json` to start again from the prototype data. Not usable on Vercel yet (see
+  docs/DECISIONS.md); Supabase replaces it.
+- Owner guide (Arabic): [docs/OWNER-GUIDE-AR.md](docs/OWNER-GUIDE-AR.md)
+
 ## Commands
 
 | Command             | What it does                                         |
@@ -35,11 +42,12 @@ Open http://localhost:3000. You are sent to `/ar` (Arabic) or `/fr` (French).
 
 ```
 messages/        Storefront texts, ar.json and fr.json (copied from the prototype)
-src/app/         Pages. Everything visible lives under src/app/[locale]/
+src/app/         Pages: storefront and landing pages under [locale]/, dashboard under admin/
 src/components/  Shared UI pieces
 src/data/        Static data (the 58 wilayas)
 src/i18n/        Language setup (next-intl)
-src/lib/         Helpers: theme, price/number formatting, phone validation
+src/lib/         Pricing, config validation, theme, formatting, phone, admin session
+src/lib/server/  Data access (local store now, Supabase later), orders, notifications
 src/proxy.ts     Sends visitors to /ar or /fr
 ```
 

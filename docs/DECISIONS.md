@@ -41,3 +41,40 @@ other two are for the Store Designer.
 - **Dark-mode fix (to confirm with owner):** in the prototype, a phone in dark mode with the cream
   background got light text on cream (unreadable). The dark rules now come after the background rules,
   so dark mode shows the full dark palette. Light mode looks exactly like the prototype.
+
+## 2026-10-10 — Full build before Supabase (owner's request)
+
+The owner asked to build the whole site now instead of waiting for the Supabase account.
+
+- **Data:** a local JSON store (`.data/db.json`, git-ignored, created from the prototype data on first
+  run). All access goes through `src/lib/server/` (`db.ts`, `catalog.ts`, `orders.ts`) and the admin
+  actions in `src/app/admin/actions.ts`. Writes are serialized and atomic. Uploaded images go to
+  `.data/uploads/` and are served by `/media/<name>`.
+  **Limit:** this works on a computer or a VPS with a disk (`npm run build && npm start`), **not on
+  Vercel** (read-only disk). Moving to Supabase replaces these server files only; pages and
+  components don't change.
+- **Admin login:** password in `ADMIN_PASSWORD` (role `owner`) and optional `STAFF_PASSWORD` (role
+  `staff`), session cookie signed with `ADMIN_SECRET` (HMAC-SHA256, 14 days). The proxy blocks
+  `/admin` without a valid cookie and every server action checks the role again. Replaced by Supabase
+  Auth later.
+- **Prices:** `src/lib/pricing.ts` is the single pricing function (products, offers, delivery). The
+  cart uses it for display; `placeOrder` runs it again on the server with stored prices.
+- **Offers:** percent, fixed amount, free shipping, "buy 2 get the 3rd free"; optional code, minimum
+  total, first order only, start/end dates. Coupon codes never reach the browser; the cart asks the
+  server (`quoteCart`).
+- **Stock:** taken when an order is confirmed (or shipped/delivered), given back when it is cancelled,
+  returned or set back to "new". Every change is logged in `stockMoves`.
+- **Caching:** the storefront reads cached data (`"use cache"` with tags `catalog` and `config`);
+  admin changes expire the tag, so the store updates without a deploy.
+- **Store Designer:** edits auto-save as a draft; "Publish" makes them live and keeps the last 10
+  published versions. The preview is the real storefront in an iframe, talking through
+  `postMessage` restricted to the same origin.
+- **Notifications:** the dashboard checks for new orders every 20 s (sound, toast, system
+  notification). Telegram message when `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` are set. Email
+  needs a provider (not chosen yet).
+- **DHD Express:** manual flow (CSV export, printable slips, tracking number moves the order to
+  "shipping") until we know whether DHD has an API.
+- **Additions to the prototype UI** (needed for real use, same visual language): coupon field and
+  discount line in the cart, product editor dialog, order detail dialog, landing page public view,
+  login page. Bug fixes: admin header overflow on phones, toast edge visible when hidden.
+- Tailwind's preflight reset is not loaded: the ported prototype CSS relies on browser defaults.

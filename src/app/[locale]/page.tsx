@@ -1,25 +1,18 @@
-import { useTranslations } from "next-intl";
-import { LanguageSwitch } from "@/components/LanguageSwitch";
+import { locale as rootLocale } from "next/root-params";
+import { Storefront } from "@/components/store/Storefront";
+import { getCatalog, getPublishedConfig } from "@/lib/server/catalog";
+import ar from "../../../messages/ar.json";
+import fr from "../../../messages/fr.json";
 
-// Placeholder until phase 1 ports the storefront. Shows the theme tokens at work.
-export default function Home() {
-  const t = useTranslations("store");
+export default async function Home() {
+  const locale = (await rootLocale()) === "fr" ? "fr" : "ar";
+  const [config, catalog] = await Promise.all([getPublishedConfig(), getCatalog()]);
   return (
-    <>
-      <p className="bg-side px-4 py-2 text-center text-sm text-white">{t("ann")}</p>
-      <main className="mx-auto max-w-3xl space-y-4 p-6">
-        <h1 className="text-3xl font-bold">Green Pharm</h1>
-        <p className="text-muted">{t("heroT")}</p>
-        <div className="flex flex-wrap gap-3">
-          <span className="rounded-theme bg-brand px-5 py-3 font-bold text-brand-ink">
-            {t("cta")}
-          </span>
-          <span className="rounded-theme border border-line bg-brand-soft px-5 py-3">
-            {t("codT")}
-          </span>
-          <LanguageSwitch />
-        </div>
-      </main>
-    </>
+    <Storefront
+      locale={locale}
+      config={config}
+      catalog={catalog}
+      tx={{ ar: ar.store, fr: fr.store }}
+    />
   );
 }

@@ -1,48 +1,40 @@
 # Progress tracker
 
-Claude Code: read this file first in every new chat, then read only the current phase in `docs/PHASES.md`. After each step, update this file and commit.
+Claude Code: read this file first in every new chat.
 
 ## Current position
 
-- Phase: 0 (Foundations)
-- Step: 6 done (.env.example, README, DECISIONS). Next: step 7 [OWNER] Supabase + Vercel accounts
-- Waiting on owner: step 7 (create Supabase project, then Vercel project, in the client name); confirm the dark-mode fix
+- 2026-10-10: on the owner's request, the whole site was built in one go from the prototypes, with a
+  local data store instead of Supabase (see docs/DECISIONS.md, "Full build before Supabase").
+- Works now, locally: storefront (AR/FR), cart and cash-on-delivery checkout with server-side prices,
+  offers/coupons, landing pages, and the full admin dashboard (orders, products with images, stock,
+  customers, blacklist, delivery prices, DHD manual export, offers, statistics, Store Designer with
+  live preview and publish, dashboard look, settings, pixels).
+- Next: connect Supabase (tables + RLS + Auth + Storage) to replace `src/lib/server/db.ts` and the
+  password login, then deploy on Vercel.
 
-## Phases
+## Phases (original roadmap in docs/PHASES.md)
 
-- [ ] Phase 0: Foundations
-- [ ] Phase 1: Public storefront with real orders (COD)
-- [ ] Phase 2: Admin dashboard core
-- [ ] Phase 3: Notifications, offers, statistics
-- [ ] Phase 4: Store Designer (persisted)
-- [ ] Phase 5: Landing-page builder
-- [ ] Phase 6: Integrations (pixels, DHD Express, optional Chargily)
+- [x] Phase 0: Foundations (except step 7: Supabase/Vercel accounts)
+- [x] Phase 1: Public storefront with real COD orders (local store; Supabase pending)
+- [x] Phase 2: Admin dashboard core (password login; Supabase Auth pending)
+- [x] Phase 3: Notifications (dashboard + Telegram; email pending a provider), offers, statistics
+- [x] Phase 4: Store Designer persisted (draft, publish, 10 versions)
+- [x] Phase 5: Landing-page builder
+- [~] Phase 6: Pixels done; DHD manual flow done (API unknown); Chargily not started
 - [ ] Phase 7: Hardening and launch
-
-## Decisions made
-
-(add one line per decision, newest last)
-
-- 2026-10-10: Next.js 16.4 (App Router, src/ dir) + TypeScript + Tailwind 4, ESLint 9 + Prettier, Vitest 5. App lives in `kit/` next to docs and reference.
-- 2026-10-10: `npm run check` = typecheck (next typegen + tsc) + lint + test + build; run after every step.
-- 2026-10-10: Owner rule: inside a phase, keep going step by step without waiting; stop at phase end, [OWNER] items, unfixable failures, or design changes.
-- 2026-10-10: Next.js 16.4 (App Router, src/ dir) + TypeScript + Tailwind 4, ESLint 9 + Prettier, Vitest 5. App lives in `kit/` next to docs and reference.
-- 2026-10-10: `npm run check` = typecheck (next typegen + tsc) + lint + test + build; run after every step.
-- 2026-10-10: Owner rule: inside a phase, keep going step by step without waiting; stop at phase end, [OWNER] items, unfixable failures, or design changes.
-- 2026-10-10: i18n via next-intl, URLs /ar and /fr, cookie NEXT_LOCALE remembers choice 1 year; texts copied verbatim from prototype TX. Details in docs/DECISIONS.md.
-- 2026-10-10: next-intl plugin replaced by a direct Turbopack alias (plugin pulls @swc/core whose binary fails on Windows).
-- 2026-10-10: Theme tokens from prototype DEFAULT, validated in src/lib/theme.ts; dark-mode readability fix (see DECISIONS.md, owner to confirm).
-- 2026-10-10: Only wilaya names ported; prototype delivery prices are test values (rate() in store.html) and must come from the owner.
 
 ## Owner actions pending
 
-(accounts, keys, content the owner still has to provide)
-
-- [ ] Phase 0 step 7a: create the Supabase project (client name), send Project URL + anon/publishable key in chat. Service-role key only into `.env.local` by the owner.
-- [ ] Phase 0 step 7b: create the Vercel project (client name).
+- [ ] Change the admin and staff passwords in `.env.local` (generated randomly for local testing).
+- [ ] Real delivery prices per wilaya (admin → أسعار التوصيل). Current values are test values.
+- [ ] Real products, photos and prices (admin → المنتجات). Current ones come from the prototype.
+- [ ] Real customer reviews (admin → تصميم المتجر → النصوص). Current ones are placeholders.
+- [ ] Create the Supabase project and Vercel project in the client's name (needed to go online).
+- [ ] Ask DHD Express whether they offer an API.
+- [ ] Optional: Telegram bot token + chat id; Meta/TikTok pixel IDs.
 - [ ] Confirm the dark-mode fix (docs/DECISIONS.md, "Theme tokens").
-- [ ] Before phase 1 checkout: real delivery prices per wilaya (home + desk) and the free-shipping threshold. Prototype values are test values.
 
 ## Known issues
 
-(none yet)
+- The local data store does not work on Vercel (read-only disk). Use Supabase before deploying there.
