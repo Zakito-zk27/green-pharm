@@ -48,6 +48,16 @@ export function Products() {
           </button>
         </div>
       </div>
+      {data.products.length === 0 && (
+        <div className="card empty">
+          <p>
+            لا توجد منتجات بعد. أضف أول منتج: الاسم، الأحجام والأسعار، الكمية في المخزون والصور.
+          </p>
+          <button className="btn pri" onClick={() => setEdit("new")}>
+            + إضافة منتج
+          </button>
+        </div>
+      )}
       <div className="grid prod-grid">
         {data.products.map((p) => {
           const q = stockOf(p);

@@ -2,16 +2,7 @@
 // The store starts from these values the first time it runs (see src/lib/server/db.ts).
 
 import { WILAYAS } from "@/data/wilayas";
-import type {
-  Category,
-  DB,
-  DeliveryRate,
-  Offer,
-  Product,
-  Settings,
-  SkinType,
-  StoreConfig,
-} from "./types";
+import type { Category, DB, DeliveryRate, Product, Settings, SkinType, StoreConfig } from "./types";
 
 /** `DEFAULT` from reference/store.html. The logo is served from /public. */
 export const DEFAULT_CONFIG: StoreConfig = {
@@ -82,6 +73,7 @@ type Seed = {
   sold: number;
 };
 
+// Sample products from `P` in reference/store.html, used by the tests (the store starts empty).
 // `P` from reference/store.html, with the per-size stock from the admin prototype (`invVar`).
 const SEED: Seed[] = [
   {
@@ -208,62 +200,6 @@ export function seedProducts(now: string): Product[] {
   }));
 }
 
-/** `offers` from reference/admin-dashboard.html. */
-export const DEFAULT_OFFERS: Offer[] = [
-  {
-    id: "o1",
-    name: "خصم أول طلب",
-    desc: "15% على الطلب الأول",
-    type: "percent",
-    value: 15,
-    code: "WELCOME15",
-    minTotal: 0,
-    firstOnly: true,
-    on: true,
-    startsAt: "",
-    endsAt: "",
-  },
-  {
-    id: "o2",
-    name: "اشترِ 2 والثالث مجاناً",
-    desc: "على منتجات العناية بالبشرة",
-    type: "b2g1",
-    value: 0,
-    code: "",
-    minTotal: 0,
-    firstOnly: false,
-    on: true,
-    startsAt: "",
-    endsAt: "",
-  },
-  {
-    id: "o3",
-    name: "شحن مجاني",
-    desc: "للطلبات فوق 6000 دج",
-    type: "freeship",
-    value: 0,
-    code: "FREESHIP",
-    minTotal: 6000,
-    firstOnly: false,
-    on: false,
-    startsAt: "",
-    endsAt: "",
-  },
-  {
-    id: "o4",
-    name: "عرض نهاية الأسبوع",
-    desc: "-10% حتى الجمعة",
-    type: "percent",
-    value: 10,
-    code: "WEEKEND10",
-    minTotal: 0,
-    firstOnly: false,
-    on: false,
-    startsAt: "",
-    endsAt: "",
-  },
-];
-
 export const DEFAULT_SETTINGS: Settings = {
   freeShip: 6000,
   lowStock: 6,
@@ -272,16 +208,17 @@ export const DEFAULT_SETTINGS: Settings = {
   admin: { name: "Green Pharm", color: "#2f5d46", side: "#1d2b24", accent: "#4f9c88", radius: 12 },
 };
 
-export function emptyDB(now: string): DB {
+export function emptyDB(): DB {
   return {
     version: 1,
     nextOrderId: 1001,
-    nextProductId: SEED.length + 1,
+    nextProductId: 1,
     categories: DEFAULT_CATEGORIES,
-    products: seedProducts(now),
+    // The owner adds the real products from the dashboard.
+    products: [],
     orders: [],
     rates: DEFAULT_RATES,
-    offers: DEFAULT_OFFERS,
+    offers: [],
     stockMoves: [],
     blacklist: [],
     landings: [],

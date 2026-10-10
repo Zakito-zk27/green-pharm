@@ -18,7 +18,7 @@ export function LoginForm() {
         </div>
       </div>
       <h1 style={{ fontSize: 20 }}>تسجيل الدخول</h1>
-      <p className="sub">أدخل كلمة سر المدير أو الموظف.</p>
+      <p className="sub">أدخل كلمة سر المدير.</p>
       {state?.error && (
         <p className="err-msg" role="alert">
           {state.error}

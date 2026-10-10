@@ -392,8 +392,7 @@ function OrderDialog({ o, onClose }: { o: Order; onClose: () => void }) {
               <li key={i}>
                 <Pill s={h.status} />{" "}
                 <small className="muted">
-                  {dateFmt(h.at)} {timeFmt(h.at)} ·{" "}
-                  {h.by === "client" ? "العميل" : h.by === "owner" ? "المدير" : "موظف"}
+                  {dateFmt(h.at)} {timeFmt(h.at)} · {h.by === "client" ? "العميل" : "المدير"}
                 </small>
                 {h.note && <div>{h.note}</div>}
               </li>

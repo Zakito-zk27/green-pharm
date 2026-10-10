@@ -127,12 +127,7 @@ export type Page =
   | "customers"
   | "blacklist"
   | "delivery"
-  | "shipping"
-  | "inventory"
-  | "moves"
-  | "dead"
   | "design"
-  | "brand"
   | "settings";
 
 export type Ctx = {

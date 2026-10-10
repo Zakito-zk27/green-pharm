@@ -78,3 +78,13 @@ The owner asked to build the whole site now instead of waiting for the Supabase 
   discount line in the cart, product editor dialog, order detail dialog, landing page public view,
   login page. Bug fixes: admin header overflow on phones, toast edge visible when hidden.
 - Tailwind's preflight reset is not loaded: the ported prototype CSS relies on browser defaults.
+
+## 2026-10-10 — Simplified on the owner's request
+
+The owner wants a simple Algerian COD store: visitors browse without an account, orders appear in
+the dashboard, the owner confirms them by phone. Removed: staff password/role, Telegram messages,
+the DHD Express page (CSV export, slips), and the stock pages (stock is edited in the product form).
+No card payment and no email notifications. The store starts with **no products and no offers**;
+the owner adds them from the dashboard. Hosting target: **Cloudflare** (see PROGRESS.md: the local
+JSON store must be replaced by Cloudflare D1 + R2 first). This entry replaces the staff, Telegram
+and DHD points of the previous entry.

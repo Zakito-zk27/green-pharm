@@ -9,15 +9,14 @@ import { getAdminData, latestOrderId, logout, type AdminData } from "@/app/admin
 import { normalizePhone } from "@/lib/phone";
 import { AdminCtx, num, type Ctx, type Page } from "./ui";
 import { Blacklist, Customers } from "./pages/Customers";
-import { Delivery, Shipping } from "./pages/Delivery";
+import { Delivery } from "./pages/Delivery";
 import { Designer } from "./pages/Designer";
 import { Home } from "./pages/Home";
-import { DeadStock, Inventory, Moves } from "./pages/Inventory";
 import { Landing } from "./pages/Landing";
 import { Offers } from "./pages/Offers";
 import { Orders } from "./pages/Orders";
 import { Products } from "./pages/Products";
-import { Brand, Settings } from "./pages/Settings";
+import { Settings } from "./pages/Settings";
 import { Stats } from "./pages/Stats";
 
 const ICON: Record<string, string> = {
@@ -66,25 +65,10 @@ const NAV: [string, [string, string, Page, boolean?][]][] = [
     ],
   ],
   [
-    "التوصيل",
-    [
-      ["truck", "أسعار التوصيل", "delivery", true],
-      ["truck", "شركات التوصيل", "shipping"],
-    ],
-  ],
-  [
-    "المخزون",
-    [
-      ["grid", "المخزون", "inventory"],
-      ["list", "حركات المخزون", "moves"],
-      ["clock", "المخزون الراكد", "dead"],
-    ],
-  ],
-  [
     "المتجر",
     [
+      ["truck", "أسعار التوصيل", "delivery", true],
       ["brush", "تصميم المتجر", "design", true],
-      ["gear", "مظهر اللوحة", "brand", true],
       ["gear", "الإعدادات", "settings", true],
     ],
   ],
@@ -287,12 +271,7 @@ export function AdminApp() {
     customers: () => <Customers />,
     blacklist: () => <Blacklist />,
     delivery: () => <Delivery />,
-    shipping: () => <Shipping />,
-    inventory: () => <Inventory />,
-    moves: () => <Moves />,
-    dead: () => <DeadStock />,
     design: () => <Designer />,
-    brand: () => <Brand />,
     settings: () => <Settings />,
   };
 
@@ -304,7 +283,7 @@ export function AdminApp() {
             <div className="logo-mark">{(a.name || "G").trim().charAt(0)}</div>
             <div>
               <b>{a.name}</b>
-              <small>لوحة التحكم · {owner ? "المدير" : "موظف"}</small>
+              <small>لوحة التحكم</small>
             </div>
           </div>
           <nav>

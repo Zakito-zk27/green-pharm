@@ -454,7 +454,7 @@ export function Storefront({
                     padding: 30,
                   }}
                 >
-                  {T("emptyG")}
+                  {products.length ? T("emptyG") : T("noProducts")}
                 </p>
               )}
             </div>
@@ -522,7 +522,7 @@ export function Storefront({
   const bestList = useMemo(
     () =>
       products
-        .filter((p) => totalStock(p) > 0)
+        .filter((p) => totalStock(p) > 0 && p.sold > 0)
         .sort((a, b) => b.sold - a.sold)
         .slice(0, cfg.best.count),
     [products, cfg.best.count],
@@ -830,7 +830,8 @@ export function Storefront({
 
       <main className="wrap main" id="top">
         {cfg.sections.map((s) =>
-          s.on ? (
+          // The best sellers strip only appears once products have sold.
+          s.on && !(s.k === "best" && bestList.length === 0) ? (
             <section
               key={s.k}
               id={

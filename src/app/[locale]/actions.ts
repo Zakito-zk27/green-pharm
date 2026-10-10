@@ -1,11 +1,9 @@
 "use server";
 
-import { after } from "next/server";
 import { headers } from "next/headers";
 import { normalizePhone } from "@/lib/phone";
 import { priceCart, type CartLine, type PriceResult } from "@/lib/pricing";
 import { readDB } from "@/lib/server/db";
-import { notifyNewOrder } from "@/lib/server/notify";
 import { createOrder, isFirstOrder, type CreateResult, type OrderInput } from "@/lib/server/orders";
 import type { DeliveryMode } from "@/lib/types";
 
@@ -16,16 +14,7 @@ async function clientIp() {
 
 /** Place a cash-on-delivery order. Totals are recomputed on the server. */
 export async function placeOrder(input: OrderInput): Promise<CreateResult> {
-  const result = await createOrder(input, await clientIp());
-  if (result.ok) {
-    const id = result.order.id;
-    after(async () => {
-      const db = await readDB();
-      const order = db.orders.find((o) => o.id === id);
-      if (order) await notifyNewOrder(order);
-    });
-  }
-  return result;
+  return createOrder(input, await clientIp());
 }
 
 /** Server-side price for the cart, used when a coupon is typed or the phone number is known. */

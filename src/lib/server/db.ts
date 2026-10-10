@@ -24,7 +24,7 @@ async function load(): Promise<DB> {
     return JSON.parse(await fs.readFile(FILE, "utf8")) as DB;
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code !== "ENOENT") throw e;
-    const db = emptyDB(new Date().toISOString());
+    const db = emptyDB();
     await save(db);
     return db;
   }

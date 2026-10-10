@@ -63,11 +63,8 @@ function view(db: DB, role: Role): AdminData {
 export async function login(_: unknown, form: FormData): Promise<{ error: string } | undefined> {
   const pw = String(form.get("password") ?? "");
   const owner = process.env.ADMIN_PASSWORD;
-  const staff = process.env.STAFF_PASSWORD;
   if (!owner) return { error: "لم يتم ضبط كلمة سر المدير بعد (ADMIN_PASSWORD في .env.local)." };
-  let role: Role | null = null;
-  if (samePassword(pw, owner)) role = "owner";
-  else if (staff && samePassword(pw, staff)) role = "staff";
+  const role: Role | null = samePassword(pw, owner) ? "owner" : null;
   if (!role) {
     await new Promise((r) => setTimeout(r, 800)); // slow down guessing
     return { error: "كلمة السر غير صحيحة." };

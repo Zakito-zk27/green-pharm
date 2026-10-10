@@ -116,6 +116,7 @@
     "lpEnds": "L’offre se termine dans",
     "hrs": "heures",
     "mins": "minutes",
-    "secs": "secondes"
+    "secs": "secondes",
+    "noProducts": "Aucun produit pour le moment. Revenez bientôt !"
   }
 }
