@@ -15,13 +15,13 @@
     {
       "binding": "DB",
       "database_name": "green-pharm-db",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "65bb878d-72a4-40a2-ad13-ab21023f3a81",
     },
     // Product photos and logos (used when no R2 bucket is set up, R2 needs a bank card).
     {
       "binding": "MEDIA_DB",
       "database_name": "green-pharm-media",
-      "database_id": "00000000-0000-0000-0000-000000000001",
+      "database_id": "3165eacb-2f01-4959-bb53-6b97ee0b5829",
     },
   ],
   // Optional: photos in R2 instead of MEDIA_DB. Uncomment after `npx wrangler r2 bucket create green-pharm-media`.
