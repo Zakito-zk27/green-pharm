@@ -5,7 +5,7 @@ Claude Code: read this file first in every new chat, then read only the current 
 ## Current position
 
 - Phase: 0 (Foundations)
-- Step: 1 done (scaffold). Next: step 2 (i18n with next-intl + self-hosted fonts)
+- Step: 2 done (i18n ar/fr + fonts). Next: step 3 (theme tokens as CSS variables)
 - Waiting on owner: nothing yet
 
 ## Phases
@@ -22,12 +22,15 @@ Claude Code: read this file first in every new chat, then read only the current 
 ## Decisions made
 
 (add one line per decision, newest last)
+
 - 2026-10-10: Next.js 16.4 (App Router, src/ dir) + TypeScript + Tailwind 4, ESLint 9 + Prettier, Vitest 5. App lives in `kit/` next to docs and reference.
 - 2026-10-10: `npm run check` = typecheck (next typegen + tsc) + lint + test + build; run after every step.
 - 2026-10-10: Owner rule: inside a phase, keep going step by step without waiting; stop at phase end, [OWNER] items, unfixable failures, or design changes.
 - 2026-10-10: Next.js 16.4 (App Router, src/ dir) + TypeScript + Tailwind 4, ESLint 9 + Prettier, Vitest 5. App lives in `kit/` next to docs and reference.
 - 2026-10-10: `npm run check` = typecheck (next typegen + tsc) + lint + test + build; run after every step.
 - 2026-10-10: Owner rule: inside a phase, keep going step by step without waiting; stop at phase end, [OWNER] items, unfixable failures, or design changes.
+- 2026-10-10: i18n via next-intl, URLs /ar and /fr, cookie NEXT_LOCALE remembers choice 1 year; texts copied verbatim from prototype TX. Details in docs/DECISIONS.md.
+- 2026-10-10: next-intl plugin replaced by a direct Turbopack alias (plugin pulls @swc/core whose binary fails on Windows).
 
 ## Owner actions pending
 
