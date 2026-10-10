@@ -88,3 +88,24 @@ No card payment and no email notifications. The store starts with **no products 
 the owner adds them from the dashboard. Hosting target: **Cloudflare** (see PROGRESS.md: the local
 JSON store must be replaced by Cloudflare D1 + R2 first). This entry replaces the staff, Telegram
 and DHD points of the previous entry.
+
+## 2026-10-10 — Cloudflare Workers (OpenNext) with D1
+
+- Hosting: Cloudflare Workers through `@opennextjs/cloudflare` (`npm run deploy`, config in
+  `wrangler.jsonc` and `open-next.config.ts`). Worker size: ~1.3 MiB gzip (free plan limit 3 MiB).
+- Data: Cloudflare D1, binding `DB` (`src/lib/server/db.ts`). Tables are created on first use, no
+  migration step: `docs` (one JSON row per small collection: settings, delivery prices, offers,
+  config, categories, blacklist, landing pages), `products`, `orders` (id, phone, status + JSON),
+  `stock_moves`. `writeDB` writes only the rows that changed. Order numbers come from the database
+  (`MAX(id)+1` in the insert) so two simultaneous orders can't collide. The storefront never loads
+  orders; product sales counts are kept on each product (`sold`).
+- Images: a second D1 database `MEDIA_DB` (table `media`, BLOB), because R2 needs a bank card even
+  on the free plan. If an R2 bucket is bound as `MEDIA`, it is used instead.
+- No Next.js data cache any more (`cacheComponents` off, pages `force-dynamic`): every request reads
+  D1, so admin changes are live immediately. Reads per page view ≈ number of products + 7 rows.
+- `src/proxy.ts` became `src/middleware.ts` (Edge runtime): OpenNext only has experimental support
+  for Node.js proxies. Next prints a deprecation warning; that's expected.
+- Local development: `next dev` gets local D1 copies in `.wrangler/` via
+  `initOpenNextCloudflareForDev()`. `npm run preview`/`deploy` must run on Linux: on Windows the
+  OpenNext build misses some manifests ("Unexpected loadManifest(...preview-props.json)").
+  Deploy through Cloudflare's Git integration (Linux build) or WSL.

@@ -8,7 +8,7 @@ import { cleanText } from "@/lib/config";
 import { isValidAlgerianPhone, normalizePhone } from "@/lib/phone";
 import { priceCart, type CartLine } from "@/lib/pricing";
 import type { DB, DeliveryMode, Order, OrderStatus } from "@/lib/types";
-import { writeDB } from "./db";
+import { insertOrder, readDB } from "./db";
 
 export type OrderInput = {
   name: string;
@@ -81,7 +81,8 @@ export async function createOrder(raw: OrderInput, ip: string): Promise<CreateRe
   if (rateLimited("ip:" + ip, 6) || rateLimited("phone:" + phone, 3))
     return { ok: false, error: "rate" };
 
-  return writeDB((db) => {
+  const db = await readDB({ orders: { phone } });
+  {
     if (db.blacklist.some((b) => b.phone === phone))
       return { ok: false as const, error: "blocked" as const };
     const open = db.orders.filter((o) => o.phone === phone && o.status === "new").length;
@@ -109,8 +110,7 @@ export async function createOrder(raw: OrderInput, ip: string): Promise<CreateRe
       return { ok: false as const, error: "stock" as const };
 
     const now = new Date().toISOString();
-    const order: Order = {
-      id: db.nextOrderId++,
+    const order: Omit<Order, "id"> = {
       createdAt: now,
       name: cleanText(raw.name, 80).trim(),
       phone,
@@ -133,11 +133,11 @@ export async function createOrder(raw: OrderInput, ip: string): Promise<CreateRe
       lang: raw.lang === "fr" ? "fr" : "ar",
       stockApplied: false,
     };
-    db.orders.unshift(order);
+    const id = await insertOrder(order);
     return {
       ok: true as const,
       order: {
-        id: order.id,
+        id,
         total: order.total,
         shipping: order.shipping,
         discount: order.discount,
@@ -148,7 +148,7 @@ export async function createOrder(raw: OrderInput, ip: string): Promise<CreateRe
         phone: order.phone,
       },
     };
-  });
+  }
 }
 
 /** Stock leaves the shelf when an order is confirmed and comes back if it is cancelled or returned. */
@@ -157,16 +157,20 @@ export function applyStatus(db: DB, order: Order, status: OrderStatus, by: strin
   const takesStock = status === "confirmed" || status === "shipping" || status === "delivered";
   const at = new Date().toISOString();
   if (takesStock && !order.stockApplied) {
-    for (const i of order.items)
+    for (const i of order.items) {
       moveStock(db, i.productId, i.variantId, -i.qty, "order", by, order.id);
+      addSold(db, i.productId, i.qty);
+    }
     order.stockApplied = true;
   } else if (
     (status === "cancelled" || status === "returned" || status === "new") &&
     order.stockApplied
   ) {
     const reason = status === "returned" ? "return" : "cancel";
-    for (const i of order.items)
+    for (const i of order.items) {
       moveStock(db, i.productId, i.variantId, i.qty, reason, by, order.id);
+      addSold(db, i.productId, -i.qty);
+    }
     order.stockApplied = false;
   }
   order.status = status;
@@ -195,4 +199,9 @@ export function moveStock(
     ...(orderId ? { orderId } : {}),
   });
   if (db.stockMoves.length > 2000) db.stockMoves.length = 2000;
+}
+
+function addSold(db: DB, productId: number, qty: number) {
+  const p = db.products.find((x) => x.id === productId);
+  if (p) p.sold = Math.max(0, (p.sold ?? 0) + qty);
 }

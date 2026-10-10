@@ -45,3 +45,8 @@ next-env.d.ts
 
 # local data store (orders, products, uploads) until Supabase is connected
 /.data/
+
+# Cloudflare
+.open-next
+.wrangler
+.dev.vars

@@ -1,18 +1,24 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { LandingView } from "@/components/store/LandingView";
-import { getCatalog, getLanding, getPublishedConfig } from "@/lib/server/catalog";
+import { getStoreData } from "@/lib/server/catalog";
 import ar from "../../../../../messages/ar.json";
 import fr from "../../../../../messages/fr.json";
 
 type Props = PageProps<"/[locale]/p/[slug]">;
 
+async function find(slug: string) {
+  const { config, catalog, landings } = await getStoreData();
+  const lp = landings.find((l) => l.slug === slug);
+  const product = lp && catalog.products.find((x) => x.id === lp.productId);
+  return lp && product ? { lp, product, config, catalog } : null;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
-  const [lp, catalog] = await Promise.all([getLanding(slug), getCatalog()]);
-  const p = lp && catalog.products.find((x) => x.id === lp.productId);
-  if (!p) return {};
+  const found = await find(slug);
+  if (!found) return {};
+  const p = found.product;
   const L = locale === "fr" ? "fr" : "ar";
   return {
     title: p.name[L] || p.name.ar,
@@ -21,31 +27,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-async function Content({ params }: Props) {
+export default async function LandingPageRoute({ params }: Props) {
   const { slug, locale } = await params;
-  const [lp, catalog, config] = await Promise.all([
-    getLanding(slug),
-    getCatalog(),
-    getPublishedConfig(),
-  ]);
-  const product = lp && catalog.products.find((x) => x.id === lp.productId);
-  if (!lp || !product) notFound();
+  const found = await find(slug);
+  if (!found) notFound();
   return (
     <LandingView
-      lp={lp}
-      product={product}
-      catalog={catalog}
-      config={config}
+      lp={found.lp}
+      product={found.product}
+      catalog={found.catalog}
+      config={found.config}
       locale={locale === "fr" ? "fr" : "ar"}
       tx={{ ar: ar.store, fr: fr.store }}
     />
-  );
-}
-
-export default function LandingPageRoute(props: Props) {
-  return (
-    <Suspense fallback={null}>
-      <Content {...props} />
-    </Suspense>
   );
 }

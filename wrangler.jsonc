@@ -1,0 +1,29 @@
+// Cloudflare Workers settings for the store (built with OpenNext: `npm run deploy`).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "green-pharm",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "green-pharm" }],
+  "d1_databases": [
+    // Orders, products, settings. The id comes from `npx wrangler d1 create green-pharm-db`.
+    {
+      "binding": "DB",
+      "database_name": "green-pharm-db",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+    },
+    // Product photos and logos (used when no R2 bucket is set up, R2 needs a bank card).
+    {
+      "binding": "MEDIA_DB",
+      "database_name": "green-pharm-media",
+      "database_id": "00000000-0000-0000-0000-000000000001",
+    },
+  ],
+  // Optional: photos in R2 instead of MEDIA_DB. Uncomment after `npx wrangler r2 bucket create green-pharm-media`.
+  // "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "green-pharm-media" }],
+}

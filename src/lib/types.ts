@@ -29,12 +29,13 @@ export type Product = {
   variants: Variant[];
   rating: number;
   soldBase: number; // sales before the online store (from the prototype), added to real sales
+  sold?: number; // units in confirmed, shipped or delivered orders (kept up to date by applyStatus)
   published: boolean;
   createdAt: string;
 };
 
 /** What the storefront receives: published products with the sales count resolved. */
-export type PublicProduct = Omit<Product, "soldBase" | "published" | "createdAt"> & {
+export type PublicProduct = Omit<Product, "soldBase" | "sold" | "published" | "createdAt"> & {
   sold: number;
 };
 

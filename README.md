@@ -21,9 +21,8 @@ Open http://localhost:3000. You are sent to `/ar` (Arabic) or `/fr` (French).
 
 - Admin dashboard: http://localhost:3000/admin (password: `ADMIN_PASSWORD` in `.env.local`)
 - Landing pages: `/ar/p/<slug>` and `/fr/p/<slug>`, created in the admin
-- Data lives in `.data/` (orders, products, settings in `db.json`; uploaded images in `uploads/`).
-  Delete `.data/db.json` to start again from the prototype data. Not usable on Vercel yet (see
-  docs/DECISIONS.md); Supabase replaces it.
+- Data: Cloudflare D1 (`src/lib/server/db.ts`). Locally a copy lives in `.wrangler/` (delete that
+  folder to start empty). Deploying: see docs/DECISIONS.md, "Cloudflare Workers".
 - Owner guide (Arabic): [docs/OWNER-GUIDE-AR.md](docs/OWNER-GUIDE-AR.md)
 
 ## Commands

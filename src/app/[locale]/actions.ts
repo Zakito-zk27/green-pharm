@@ -27,14 +27,15 @@ export async function quoteCart(q: {
 }): Promise<
   Pick<PriceResult, "subtotal" | "discount" | "shipping" | "total" | "offers" | "coupon">
 > {
-  const db = await readDB();
+  const phone = normalizePhone(String(q.phone ?? ""));
+  const db = await readDB(/^0[567]d{8}$/.test(phone) ? { orders: { phone } } : {});
   const r = priceCart(
     {
       lines: (q.lines ?? []).slice(0, 30),
       wilaya: q.wilaya,
       mode: q.mode === "desk" ? "desk" : "home",
       coupon: String(q.coupon ?? "").slice(0, 30),
-      firstOrder: isFirstOrder(db, normalizePhone(String(q.phone ?? ""))),
+      firstOrder: isFirstOrder(db, phone),
       now: new Date(),
     },
     {

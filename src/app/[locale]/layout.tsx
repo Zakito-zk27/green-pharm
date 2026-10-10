@@ -5,16 +5,15 @@ import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
 import { locale as rootLocale } from "next/root-params";
 import { dirOf, routing } from "@/i18n/routing";
-import { getPublishedConfig } from "@/lib/server/catalog";
+import { getStoreData } from "@/lib/server/catalog";
 import { themeAttrs, themeVars } from "@/lib/theme";
 import type { StoreConfig } from "@/lib/types";
 import { cairo, plexArabic, tajawal } from "../fonts";
 import "../globals.css";
 import "@/components/store/store.css";
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+// Every page reads the live database (products, prices, design), so nothing is prebuilt.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("store");
@@ -52,7 +51,7 @@ function theme(c: StoreConfig) {
 export default async function LocaleLayout({ children }: LayoutProps<"/[locale]">) {
   const locale = await rootLocale();
   if (!hasLocale(routing.locales, locale)) notFound();
-  const { attrs, style } = theme(await getPublishedConfig());
+  const { attrs, style } = theme((await getStoreData()).config);
 
   return (
     <html

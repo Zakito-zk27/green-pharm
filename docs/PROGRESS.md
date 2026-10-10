@@ -11,8 +11,10 @@ Claude Code: read this file first in every new chat.
   customers, blacklist, delivery prices, offers, statistics, Store Designer with
   live preview and publish, dashboard look, settings, pixels).
 - Simplified (see DECISIONS.md): no staff, Telegram, DHD or stock pages; the store starts empty.
-- Next: host on Cloudflare. The local JSON store must move to Cloudflare D1 (data) + R2 (images),
-  and `src/proxy.ts` must become an edge `middleware.ts` (OpenNext does not run Node proxies yet).
+- Moved to Cloudflare: data in D1, images in a second D1 database (see DECISIONS.md). Tested
+  locally with D1: add product with photo, order, confirm, stock and sales counts.
+- Next: deploy. Build must run on Linux (Cloudflare Git integration), create the two D1 databases,
+  put their ids in `wrangler.jsonc`, set the `ADMIN_PASSWORD` and `ADMIN_SECRET` secrets.
 
 ## Phases (original roadmap in docs/PHASES.md)
 
@@ -28,7 +30,7 @@ Claude Code: read this file first in every new chat.
 ## Owner actions pending
 
 - [ ] Change the admin password in `.env.local` (generated randomly for local testing).
-- [ ] Real delivery prices per wilaya: the owner will send them. Current values are test values.
+- [x] Real delivery prices per wilaya: the owner confirmed the current values (2026-10-10).
 - [ ] Real products, photos and prices: the owner's client adds them from admin → المنتجات.
 - [ ] Real customer reviews (admin → تصميم المتجر → النصوص). Current ones are placeholders.
 - [ ] Cloudflare account (free) in the client's name, to go online.
@@ -37,4 +39,4 @@ Claude Code: read this file first in every new chat.
 
 ## Known issues
 
-- The local data store does not work on Cloudflare or Vercel (no writable disk). Move to D1 + R2 first.
+- `npm run deploy` from Windows produces a broken build (OpenNext limitation). Build on Linux.

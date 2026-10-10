@@ -5,7 +5,8 @@ import { SESSION_COOKIE, verifySession } from "./lib/session";
 
 const intl = createMiddleware(routing);
 
-export default async function proxy(req: NextRequest) {
+// Edge middleware (not a Node.js `proxy.ts`): the stable option on Cloudflare Workers with OpenNext.
+export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
     if (pathname === "/admin/login") return NextResponse.next();
