@@ -5,7 +5,7 @@ Claude Code: read this file first in every new chat, then read only the current 
 ## Current position
 
 - Phase: 0 (Foundations)
-- Step: 3 done (theme tokens). Next: step 4 (helpers: fixNums, formatDA, phone)
+- Step: 4 done (helpers fixNums/formatDA/phone, tested). Next: step 5 (58 wilayas)
 - Waiting on owner: nothing yet
 
 ## Phases
