@@ -28,7 +28,7 @@ export async function quoteCart(q: {
   Pick<PriceResult, "subtotal" | "discount" | "shipping" | "total" | "offers" | "coupon">
 > {
   const phone = normalizePhone(String(q.phone ?? ""));
-  const db = await readDB(/^0[567]d{8}$/.test(phone) ? { orders: { phone } } : {});
+  const db = await readDB(/^0[567]\d{8}$/.test(phone) ? { orders: { phone } } : {});
   const r = priceCart(
     {
       lines: (q.lines ?? []).slice(0, 30),
